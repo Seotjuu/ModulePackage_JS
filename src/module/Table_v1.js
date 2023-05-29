@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Table from "react-bootstrap/Table";
 
-export default function Table_v1(props) {
+const Table_v1 = (props) => {
   const [field, setField] = useState([]);
   const [row, setRow] = useState([]);
 
@@ -9,7 +9,6 @@ export default function Table_v1(props) {
     setField(props.field);
     setRow(props.row);
   }, [props]);
-  console.log(row);
 
   return (
     <div className="Table_v1">
@@ -35,4 +34,6 @@ export default function Table_v1(props) {
       </Table>
     </div>
   );
-}
+};
+
+export default Table_v1;
