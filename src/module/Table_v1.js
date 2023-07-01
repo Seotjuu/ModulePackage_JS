@@ -1,43 +1,38 @@
 import React, { useState, useEffect } from "react";
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
+import Pagination from "../module/Pagination_v1";
 
 const Table_v1 = ({ field, row }) => {
-  const [fieldState, setFieldState] = useState([]);
+  const [fieldState, setFieldState] = useState(field);
   const [rowState, setRowState] = useState([]);
 
-  useEffect(() => {
-    setFieldState(field);
-    setRowState(row);
-  }, [field, row]);
+  ////////////////////////////////////////////////////////////////// Pagination //////////////////////////////////////////////////////////////////
 
+  const pageHandler = (start, end) => {
+    setRowState(row.slice(start,end));
+  }
+  
   ///////////////////////////////////////// 모듈 사용자 수정 //////////////////////////////////////////////////
 
-  const [checked_value, setChecked_value] = useState([]);
+  const [checkedValue, setCheckedValue] = useState([]); // checked된 Array value
 
-  const radio_checked_handler = () => {
+  const radioCheckedHandler = () => {
     const nodeList = Array.prototype.slice.call(
       document.querySelectorAll("[type=radio]:checked")
     );
 
-    const checkList_reduce = nodeList.reduce((acc, node) => {
-      const radio_add_object = {
-        name: node.name,
-        value: node.value,
-      };
+    const checkList = nodeList.map(({ name, value }) => ({ name, value }))
 
-      return [...acc, radio_add_object];
-    }, []);
-
-    setChecked_value(checkList_reduce);
+    setCheckedValue(checkList);
   };
-
-  useEffect(() => {
-    console.log(checked_value);
-  }, [checked_value]);
 
   return (
     <div className="Table_v1">
+      <button type="button" onClick={radioCheckedHandler}>
+        button
+      </button>
+
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -76,9 +71,7 @@ const Table_v1 = ({ field, row }) => {
         </tbody>
       </Table>
 
-      <button type="button" onClick={radio_checked_handler}>
-        button
-      </button>
+      <Pagination data={row} pageHandler={pageHandler}/>
     </div>
   );
 };
